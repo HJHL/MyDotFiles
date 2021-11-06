@@ -111,7 +111,10 @@ if [ -x "$(command -v nvim)" ]; then
     alias vim=nvim
 fi
 
+USER_LOCAL=$HOME/.local
+
 export GPG_TTY=$(tty)
+export PATH=$USER_LOCAL/bin:$PATH
 
 LOCAL_CONFIG=$HOME/.config/zsh/local.zshrc
 # if local file exists, use it
