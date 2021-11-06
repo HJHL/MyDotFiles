@@ -104,6 +104,9 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# if 256 color support, use it
+export TERM=xterm-256color
+
 if [ -x "$(command -v nvim)" ]; then
     alias vim=nvim
 fi
