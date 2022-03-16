@@ -1,0 +1,24 @@
+ZSH_CUSTOM_PLUGIN_PATH=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins
+
+if [ ! -d "$ZSH_CUSTOM_PLUGIN_PATH/zsh-syntax-highlighting" ]; then
+    echo "Install plugin highlighting..."
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+fi
+
+if [ ! -d "$ZSH_CUSTOM_PLUGIN_PATH/zsh-autosuggestions" ]; then
+    echo "Install plugin auto suggestions..."
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+fi
+
+if [ -d "$HOME/.local/bin" ]; then
+    PATH=$HOME/.local/bin:$PATH
+fi
+
+plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
+source $ZSH/oh-my-zsh.sh
+
+if [ -x "$(command -v git)" ]; then
+    alias gs="git status"
+    alias gd="git diff"
+    alias ga="git add"
+fi
