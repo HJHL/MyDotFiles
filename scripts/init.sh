@@ -35,6 +35,7 @@ apt install curl zsh git build-essential nload htop -y
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     logi "Install oh-my-zsh..."
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    echo "source $ZSH_CUSTOM_CONFIG" >> $HOME/.zshrc
     ln -s $PROJ/zsh/zsh_ext_rc $ZSH_CUSTOM_CONFIG
     if [ -f "$ZSH_CUSTOM_CONFIG" ]; then
         source $ZSH_CUSTOM_CONFIG
@@ -42,6 +43,10 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
 else
     logi "oh-my-zsh already installed"
 fi
+
+# TODO: set default shell to zsh
+
+# TODO: install zsh plugins
 
 if [ ! -d "$USER_CONFIG_PATH" ]; then
     mkdir -pv $USER_CONFIG_PATH
@@ -55,9 +60,11 @@ fi
 if [ ! -d "$HOME/.nvm" ]; then
     logi "Install nvm..."
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+    source $HOME/.zshrc
+    nvm install node
 fi
 
-if [ ! -x "$(command -v npm)" ]; then
+if [ -x "$(command -v npm)" ]; then
     logi "Install npm neovim package..."
     npm install -g neovim
 fi
