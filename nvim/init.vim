@@ -10,6 +10,15 @@ syntax on
 set showmode
 set showcmd
 set cmdheight=2
+set updatetime=300
+set shortmess+=c
+set hidden
+
+if has('nvim-0.5.0') || has('patch-8.1.1564')
+    set signcolumn=number
+else
+    set signcolumn=yes
+endif
 
 " File
 "set autochdir   " 自动切换工作目录
@@ -37,6 +46,7 @@ set smartcase   " 配合ignorecase使用
 
 " Other
 set nobackup " 禁止产生备份文件
+set nowritebackup
 set noswapfile  " 禁止产生交换文件
 set nowrap
 
@@ -63,6 +73,57 @@ call plug#begin(stdpath('data') . 'plugged')
 call plug#end()
 
 " coc.nvim
+" Use tab for trigger completion with characters and navigate
+inoremap <silent><expr> <TAB>
+    \ pumvisible() ? "\<C-N>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1] =~# '\s'
+endfunction
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
 "nmap <silent> <M-j> <Plug>(coc-definition)
 "nmap <silent> <C-,> <Plug>(coc-references)
 "nn <silent> K :call CocActionAsync('doHover')<cr>
